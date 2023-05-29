@@ -7,15 +7,31 @@ print_mem_inline=False
 mem_display_mode=hex
 */
 // enter assembly code below:
+mem_addr_start=0x5000
+mem_addr_length=32
+print_mem_inline=false
+mem_display_mode=binary
 
-mov R2, #0
-mov R1, #0
+mov R0, #0x15       // temperature in hex 15=21  01=1 20=32 
+mov R2, #0xFFF7     // 
 
-FOR: 
-cmp R1, #16
-bge DONE
-sub R2,R2,R1
-add R1,R1,#1
-b FOR
 
-DONE:
+cmp R0, #20         // is it bigger than 20
+bgt bigger             
+bic R2, r2, #0x3      // if not start heating
+orr R2, R2, #0x4
+b done
+
+bigger:
+cmp R0, #22        // is it also bigger than 22
+bgt biggerer
+bic R2, r2, #0x5     // if not then inactive 
+orr R2, R2, #0x2
+b done
+
+biggerer:
+bic R2, r2, #0x6   // start cooling
+orr R2, R2, #0x1
+b done
+
+done:
