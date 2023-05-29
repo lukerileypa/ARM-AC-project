@@ -1,0 +1,21 @@
+.syntax unified
+/*
+Use varibales below to control the debug trace.
+mem_addr_start=0x5000
+mem_addr_length=32
+print_mem_inline=False
+mem_display_mode=hex
+*/
+// enter assembly code below:
+
+mov R2, #0
+mov R1, #0
+
+FOR: 
+cmp R1, #16
+bge DONE
+sub R2,R2,R1
+add R1,R1,#1
+b FOR
+
+DONE:
